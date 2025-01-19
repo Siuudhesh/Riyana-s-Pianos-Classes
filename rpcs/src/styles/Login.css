@@ -1,0 +1,262 @@
+:root {
+    --primary-pink: #ffd1dc;
+    --secondary-blue: #b5e6eb;
+    --accent-yellow: #fff4bd;
+    --accent-purple: #e5d4f2;
+    --text-primary: #4a4a4a;
+    --text-secondary: #6c757d;
+    --background-light: #fff9fb;
+    --error-red: #ffe5e5;
+  }
+  
+  .page-wrapper {
+    min-height: 100vh;
+    min-height: 100dvh; /* For mobile browsers */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+    background: linear-gradient(
+      135deg,
+      var(--primary-pink) 0%,
+      var(--secondary-blue) 50%,
+      var(--accent-purple) 100%
+    );
+  }
+  
+  .main-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .floating-notes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: none; /* Hidden by default, shown in media query */
+  }
+  
+  .music-note {
+    position: absolute;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--accent-purple);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    animation: float 6s infinite;
+    opacity: 0.8;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translateY(-100px) rotate(180deg);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateY(-200px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+  
+  .login-container {
+    position: relative;
+    z-index: 1;
+    padding: clamp(1rem, 3vw, 2rem);
+    width: 100%;
+    max-width: 600px; /* Increased max-width for desktop */
+    margin: 0 auto;
+    animation: fadeIn 1s ease-out;
+  }
+  
+  .login-paper {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border-radius: clamp(15px, 3vw, 20px) !important;
+    padding: clamp(1.5rem, 4vw, 2rem) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  }
+  
+  .piano-keys {
+    display: flex;
+    justify-content: center;
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    gap: 2px;
+    transform: scale(clamp(0.8, 1vw, 1));
+  }
+  
+  .white-key {
+    width: 30px;
+    height: 80px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .black-key {
+    width: 20px;
+    height: 50px;
+    background: #333;
+    margin: 0 -10px;
+    z-index: 1;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .login-title {
+    font-size: clamp(1.8rem, 5vw, 2.5rem) !important;
+    margin-bottom: clamp(0.3rem, 2vw, 0.5rem) !important;
+    color: var(--text-primary) !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-subtitle {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem) !important;
+    margin-bottom: clamp(1.5rem, 4vw, 2rem) !important;
+    color: var(--text-secondary) !important;
+  }
+  
+  .login-input {
+    margin-bottom: clamp(0.8rem, 2vw, 1rem) !important;
+  }
+  
+  .login-input .MuiOutlinedInput-root {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    transition: transform 0.2s, background-color 0.3s;
+  }
+  
+  .login-input .MuiOutlinedInput-root:hover {
+    transform: translateY(-2px);
+  }
+  
+  .login-input .MuiOutlinedInput-root.Mui-focused {
+    background-color: white;
+  }
+  
+  .login-button {
+    font-size: clamp(1rem, 2.5vw, 1.1rem) !important;
+    padding: clamp(0.6rem, 2vw, 0.8rem) !important;
+    margin-top: clamp(1.5rem, 4vw, 2rem) !important;
+    background: linear-gradient(
+      45deg,
+      var(--primary-pink),
+      var(--accent-purple)
+    ) !important;
+    text-transform: none !important;
+    border-radius: 25px !important;
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+  }
+  
+  .login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+    background: linear-gradient(
+      45deg,
+      var(--accent-purple),
+      var(--primary-pink)
+    ) !important;
+  }
+  
+  .login-error {
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    padding: clamp(0.4rem, 1.5vw, 0.5rem);
+    background-color: var(--error-red);
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .login-footer {
+    font-size: clamp(0.7rem, 2vw, 0.9rem) !important;
+    margin-top: clamp(1.5rem, 4vw, 2rem) !important;
+    padding: 0 1rem;
+    text-align: center;
+    color: var(--text-primary) !important;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  }
+  
+  /* Media Queries */
+  @media (min-width: 768px) {
+    .floating-notes {
+      display: block;
+    }
+  
+    .login-container {
+      transform: none;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .page-wrapper {
+      background: linear-gradient(
+        135deg,
+        var(--primary-pink),
+        var(--secondary-blue)
+      );
+    }
+  
+    .login-paper {
+      margin: 0;
+      background: rgba(255, 255, 255, 0.95) !important;
+    }
+  }
+  
+  /* Rest of your media queries remain the same */
+  @media (max-width: 360px) {
+    .login-title {
+      font-size: 1.5rem !important;
+    }
+  
+    .login-subtitle {
+      font-size: 0.85rem !important;
+    }
+  
+    .piano-keys {
+      transform: scale(0.7);
+    }
+  }
+  
+  @media (max-height: 600px) and (orientation: landscape) {
+    .page-wrapper {
+      padding: 0.5rem;
+    }
+  
+    .piano-keys {
+      transform: scale(0.7);
+      margin-bottom: 0.5rem;
+    }
+  
+    .login-title {
+      font-size: 1.5rem !important;
+    }
+  
+    .login-subtitle {
+      font-size: 0.85rem !important;
+      margin-bottom: 1rem !important;
+    }
+  
+    .login-form {
+      gap: 0.5rem;
+    }
+  }
+  
+  @supports (padding: max(0px)) {
+    .page-wrapper {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+      padding-top: max(1rem, env(safe-area-inset-top));
+      padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+  }
+  
