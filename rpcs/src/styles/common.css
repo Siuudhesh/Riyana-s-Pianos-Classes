@@ -1,0 +1,34 @@
+:root {
+    --primary-pink: #ffd1dc;
+    --secondary-blue: #b5e6eb;
+    --accent-yellow: #fff4bd;
+    --accent-purple: #e5d4f2;
+    --text-primary: #4a4a4a;
+    --text-secondary: #6c757d;
+    --background-light: #fff9fb;
+    --box-shadow-light: rgba(0, 0, 0, 0.1);
+    --gradient-primary: linear-gradient(135deg, var(--primary-pink) 0%, var(--secondary-blue) 50%, var(--accent-purple) 100%);
+  }
+  
+  .logout-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+    color: white !important;
+    border: none;
+    padding: 10px 20px !important;
+    border-radius: 25px !important;
+    font-weight: bold !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease !important;
+    text-transform: none !important;
+    min-width: 120px !important;
+  }
+  
+  .logout-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(45deg, #ff8a8e, #f8c0b4);
+  }

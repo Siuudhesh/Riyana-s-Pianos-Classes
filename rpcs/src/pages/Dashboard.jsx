@@ -1,11 +1,33 @@
-import React from 'react';
-import { Container, Box, Typography, Grid, Paper } from '@mui/material';
-import '../styles/Dashboard.css';
+// src/pages/Dashboard.jsx
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Typography, Grid, Paper } from '@mui/material';
 import { FaUserGraduate, FaCalendarAlt, FaChartLine, FaPlusCircle } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
+import LogoutButton from '../components/LogoutButton';
+import '../styles/Dashboard.css';
+import '../styles/common.css';
+import '../styles/transitions.css';
 
 const Dashboard = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="dashboard-page">
+      <div className="logout-container">
+      <LogoutButton />
+      </div>
       <Container className="dashboard-container">
         <header className="dashboard-header">
           <Typography variant="h3" className="dashboard-title">
@@ -55,7 +77,7 @@ const Dashboard = () => {
           </Typography>
           <Grid container spacing={4} className="actions-container">
             <Grid item xs={12} sm={6} md={3}>
-              <Paper className="action-card manage-students">
+              <Paper className="action-card manage-students" onClick={() => navigate('/students')}>
                 <FaUserGraduate className="action-icon" />
                 <Typography variant="h6" className="action-title">
                   Manage Students

@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { Paper, TextField, Button, Typography, Container, Box, useMediaQuery } from '@mui/material';
 import '../styles/Login.css';
+import '../styles/common.css';
+import '../styles/transitions.css';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const isMobile = useMediaQuery('(max-width:600px)');
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -14,8 +20,8 @@ const Login = ({ onLogin }) => {
     const VALID_PASSWORD = 'piano123';
 
     if (username === VALID_USERNAME && password === VALID_PASSWORD) {
-      onLogin(true);
-      setError('');
+      login();
+      navigate('/dashboard');
     } else {
       setError('Invalid username or password');
     }

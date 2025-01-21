@@ -1,140 +1,153 @@
-:root {
-    --primary-pink: #ffd1dc;
-    --secondary-blue: #b5e6eb;
-    --accent-yellow: #fff4bd;
-    --accent-purple: #e5d4f2;
-    --text-primary: #4a4a4a;
-    --text-secondary: #6c757d;
-    --background-light: #fff9fb;
-    --box-shadow-light: rgba(0, 0, 0, 0.1);
-  }
-  
+/* src/styles/Dashboard.css */
+.dashboard-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--primary-pink) 0%, var(--secondary-blue) 50%, var(--accent-purple) 100%);
+  padding: 2rem 1rem;
+  position: relative;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3rem;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--text-primary);
+}
+
+.dashboard-title {
+  font-size: clamp(2rem, 4vw, 3rem) !important;
+  margin-bottom: 0.5rem !important;
+  text-shadow: 2px 2px 4px var(--box-shadow-light);
+  color: var(--text-primary);
+}
+
+.dashboard-subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem) !important;
+  color: var(--text-secondary);
+}
+
+.dashboard-stats {
+  margin: 3rem 0 !important;
+  width: 100%;
+}
+
+.stats-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  padding: 2rem !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 32px var(--box-shadow-light) !important;
+  text-align: center;
+  transition: all 0.3s ease !important;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+.stats-number {
+  font-size: clamp(2rem, 3vw, 2.5rem) !important;
+  font-weight: bold !important;
+  color: var(--text-primary);
+}
+
+.stats-label {
+  font-size: clamp(0.9rem, 1.5vw, 1rem) !important;
+  color: var(--text-secondary);
+}
+
+.dashboard-actions {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.actions-title {
+  text-align: center;
+  margin-bottom: 2rem !important;
+  color: var(--text-primary);
+  font-size: clamp(1.5rem, 3vw, 2rem) !important;
+}
+
+.action-card {
+  padding: 1.5rem !important;
+  border-radius: 20px !important;
+  text-align: center;
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+  height: 100%;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+.action-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.action-title {
+  margin-bottom: 0.5rem !important;
+  color: var(--text-primary);
+}
+
+.action-description {
+  color: var(--text-secondary);
+}
+
+.manage-students {
+  background: linear-gradient(135deg, #ffd1dc, #f8cdd8) !important;
+}
+
+.view-schedule {
+  background: linear-gradient(135deg, #b5e6eb, #d7f4f5) !important;
+}
+
+.analyze-progress {
+  background: linear-gradient(135deg, #e5d4f2, #f0e6f8) !important;
+}
+
+.add-class {
+  background: linear-gradient(135deg, #fff4bd, #fdf7d2) !important;
+}
+
+.dashboard-footer {
+  margin-top: 3rem;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.footer-text {
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem) !important;
+}
+
+.logout-container {
+  text-align: right;
+}
+
+@media (max-width: 768px) {
   .dashboard-page {
-    min-height: 100vh;
-    background: linear-gradient(
-      135deg,
-      var(--primary-pink) 0%,
-      var(--secondary-blue) 50%,
-      var(--accent-purple) 100%
-    );
-    padding: 2rem 1rem;
+    padding: 1rem;
   }
   
   .dashboard-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .dashboard-header {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: var(--text-primary);
-  }
-  
-  .dashboard-title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px var(--box-shadow-light);
-  }
-  
-  .dashboard-subtitle {
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    color: var(--text-secondary);  
-  }
-  
-  .dashboard-stats {
-    margin-bottom: 2rem;
-  }
-  
-  .dashboard-page .dashboard-container .dashboard-stats .stats-card {
-    background-color: #e5e4e3;
-    padding: 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 8px 32px var(--box-shadow-light);
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  
-  .dashboard-page .dashboard-container .dashboard-stats .stats-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-  }
-  
-  .stats-number {
-    font-size: clamp(2rem, 3vw, 2.5rem);
-    font-weight: bold;
-    color: var(--text-primary);
-  }
-  
-  .stats-label {
-    font-size: clamp(0.9rem, 1.5vw, 1rem);
-    color: var(--text-secondary);
-  }
-  
-  .dashboard-actions {
-    margin-bottom: 2rem;
-  }
-  
-  .actions-title {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    text-align: center;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-    padding: 2rem 0.5rem;
-  }
-  
-  .actions-container {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
+    padding-top: 2rem;
   }
   
   .action-card {
-    padding: 1.5rem;
-    border-radius: 15px;
-    text-align: center;
-    color: white;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    background: transparent; /* Set a default background to prevent white */
-  }
-  
-  .action-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-  }
-  
-  .manage-students {
-    background: linear-gradient(135deg, #ffd1dc, #f8cdd8) !important; /* Soft pink tones */
-  }
-  
-  .view-schedule {
-    background: linear-gradient(135deg, #b5e6eb, #d7f4f5) !important; /* Gentle blue tones */
-  }
-  
-  .analyze-progress {
-    background: linear-gradient(135deg, #e5d4f2, #f0e6f8) !important; /* Light lavender tones */
-  }
-  
-  .add-class {
-    background: linear-gradient(135deg, #fff4bd, #fdf7d2) !important; /* Pale yellow tones */
+    padding: 1rem !important;
   }
   
   .action-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 2rem;
   }
-  
-  .action-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .action-description {
-    font-size: 0.9rem;
-  }
-  
+}
