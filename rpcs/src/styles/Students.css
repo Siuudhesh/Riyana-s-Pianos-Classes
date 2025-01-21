@@ -1,0 +1,137 @@
+.students-page {
+  min-height: 100vh;
+  background: var(--gradient-primary);
+  padding: 2rem 1rem;
+  position: relative;
+}
+
+.students-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3rem;
+}
+
+.students-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--text-primary);
+}
+
+.students-title {
+  font-size: clamp(2rem, 4vw, 3rem) !important;
+  margin-bottom: 0.5rem !important;
+  text-shadow: 2px 2px 4px var(--box-shadow-light);
+  color: var(--text-primary);
+}
+
+.students-actions {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px var(--box-shadow-light);
+  margin-bottom: 3rem;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.actions-title {
+  font-size: clamp(1.5rem, 3vw, 2rem) !important;
+  margin-bottom: 1.5rem !important;
+  color: var(--text-primary);
+}
+
+.student-input {
+  margin-bottom: 1.5rem !important;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+}
+
+.student-input .MuiOutlinedInput-root {
+  border-radius: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.action-btn {
+  padding: 10px 24px !important;
+  border-radius: 25px !important;
+  text-transform: none !important;
+  font-weight: bold !important;
+  transition: all 0.3s ease !important;
+  background: linear-gradient(45deg, var(--primary-pink), var(--accent-purple)) !important;
+  color: var(--text-primary) !important;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+.students-list {
+  width: 100%;
+}
+
+.list-title {
+  text-align: center;
+  margin-bottom: 2rem !important;
+  color: var(--text-primary);
+  font-size: clamp(1.5rem, 3vw, 2rem) !important;
+}
+
+.student-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  padding: 1.5rem !important;
+  border-radius: 15px !important;
+  box-shadow: 0 8px 32px var(--box-shadow-light) !important;
+  text-align: center;
+  transition: all 0.3s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.student-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,209,220,0.1), rgba(229,212,242,0.1));
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+}
+
+.student-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+.student-card:hover::before {
+  transform: translateY(0);
+}
+
+.student-name {
+  font-size: 1.2rem !important;
+  font-weight: bold !important;
+  color: var(--text-primary);
+  margin-bottom: 1rem !important;
+}
+
+.student-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.logout-container {
+  text-align: right;
+}
