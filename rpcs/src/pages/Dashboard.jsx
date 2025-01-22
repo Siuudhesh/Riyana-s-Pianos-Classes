@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Typography, Grid, Paper } from '@mui/material';
 import { FaUserGraduate, FaCalendarAlt, FaChartLine, FaPlusCircle } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import LogoutButton from '../components/LogoutButton';
+import Navbar from '../components/Navbar';
 import '../styles/Dashboard.css';
 import '../styles/common.css';
 import '../styles/transitions.css';
@@ -25,13 +25,11 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-page">
-      <div className="logout-container">
-      <LogoutButton />
-      </div>
+      <Navbar/>
       <Container className="dashboard-container">
         <header className="dashboard-header">
           <Typography variant="h3" className="dashboard-title">
-            Welcome, Teacher Ri! 🎹
+            Welcome, Teacher Ri! 
           </Typography>
           <Typography variant="subtitle1" className="dashboard-subtitle">
             Manage your students and classes with ease.

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Paper, Button, TextField, Box } from '@mui/material';
+import { Container, Typography, Grid, Paper, Button, TextField, Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { db, collection, addDoc, updateDoc, deleteDoc, doc, getDocs } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import LogoutButton from '../components/LogoutButton';
+import Navbar from '../components/Navbar';
 import '../styles/Students.css';
 import '../styles/common.css';
 import '../styles/transitions.css';
@@ -32,21 +32,20 @@ const StyledButton = styled(Button)({
 });
 
 const StudentsPage = () => {
-  const { isAuthenticated } = useAuth(); // Fetch isAuthenticated from AuthContext
-  const navigate = useNavigate();       // Initialize navigate for redirection
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const [students, setStudents] = useState([]);
-  const [studentName, setStudentName] = useState('');
-  const [studentId, setStudentId] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [studentDetails, setStudentDetails] = useState({ name: '', age: '', level: '', notes: '' });
+  const [editingStudent, setEditingStudent] = useState(null);
 
-  // Redirect to login if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
     }
   }, [isAuthenticated, navigate]);
 
-  // Fetch students on component mount
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -61,36 +60,41 @@ const StudentsPage = () => {
     fetchStudents();
   }, []);
 
-  // Add a new student
-  const addStudent = async () => {
-    if (studentName.trim()) {
-      try {
-        await addDoc(collection(db, 'students'), { name: studentName });
-        setStudentName('');
-        const updatedStudents = await getDocs(collection(db, 'students'));
-        setStudents(updatedStudents.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      } catch (error) {
-        console.error('Error adding student:', error);
+  const handleDialogOpen = (student = null) => {
+    if (student) {
+      setStudentDetails({ name: student.name, age: student.age || '', level: student.level || '', notes: student.notes || '' });
+      setEditingStudent(student.id);
+    } else {
+      setStudentDetails({ name: '', age: '', level: '', notes: '' });
+      setEditingStudent(null);
+    }
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setStudentDetails((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const saveStudent = async () => {
+    try {
+      if (editingStudent) {
+        await updateDoc(doc(db, 'students', editingStudent), studentDetails);
+      } else {
+        await addDoc(collection(db, 'students'), studentDetails);
       }
+      const updatedStudents = await getDocs(collection(db, 'students'));
+      setStudents(updatedStudents.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      handleDialogClose();
+    } catch (error) {
+      console.error('Error saving student:', error);
     }
   };
 
-  // Edit an existing student
-  const editStudent = async () => {
-    if (studentName.trim() && studentId) {
-      try {
-        await updateDoc(doc(db, 'students', studentId), { name: studentName });
-        setStudentName('');
-        setStudentId(null);
-        const updatedStudents = await getDocs(collection(db, 'students'));
-        setStudents(updatedStudents.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      } catch (error) {
-        console.error('Error updating student:', error);
-      }
-    }
-  };
-
-  // Delete a student
   const deleteStudent = async (id) => {
     try {
       await deleteDoc(doc(db, 'students', id));
@@ -106,9 +110,7 @@ const StudentsPage = () => {
 
   return (
     <div className="students-page">
-      <div className="logout-container">
-      <LogoutButton />
-      </div>
+      <Navbar/>
       <Container className="students-container">
         <header className="students-header">
           <Typography variant="h3" className="students-title">
@@ -116,30 +118,9 @@ const StudentsPage = () => {
           </Typography>
         </header>
 
-        <section className="students-actions">
-          <Typography variant="h5" className="actions-title">
-            {studentId ? 'Edit Student' : 'Add New Student'}
-          </Typography>
-
-          <StyledTextField
-            label="Student Name"
-            variant="outlined"
-            value={studentName}
-            onChange={(e) => setStudentName(e.target.value)}
-            fullWidth
-            className="student-input"
-          />
-
-          <Box className="action-buttons">
-            <StyledButton
-              variant="contained"
-              onClick={studentId ? editStudent : addStudent}
-              className="action-btn"
-            >
-              {studentId ? 'Update Student' : 'Add Student'}
-            </StyledButton>
-          </Box>
-        </section>
+        <StyledButton onClick={() => handleDialogOpen()} variant="contained" className="action-btn">
+          Add New Student
+        </StyledButton>
 
         <section className="students-list">
           <Typography variant="h5" className="list-title">
@@ -157,13 +138,13 @@ const StudentsPage = () => {
                     <Typography variant="h6" className="student-name">
                       {student.name}
                     </Typography>
+                    <Typography variant="body2">Age: {student.age || 'N/A'}</Typography>
+                    <Typography variant="body2">Level: {student.level || 'N/A'}</Typography>
+                    <Typography variant="body2">Notes: {student.notes || 'N/A'}</Typography>
                     <Box className="student-actions">
                       <StyledButton
                         variant="outlined"
-                        onClick={() => {
-                          setStudentId(student.id);
-                          setStudentName(student.name);
-                        }}
+                        onClick={() => handleDialogOpen(student)}
                         className="action-btn"
                       >
                         Edit
@@ -184,6 +165,54 @@ const StudentsPage = () => {
           )}
         </section>
       </Container>
+
+      <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
+        <DialogTitle>{editingStudent ? 'Edit Student' : 'Add New Student'}</DialogTitle>
+        <DialogContent>
+          <StyledTextField
+            label="Name"
+            name="name"
+            value={studentDetails.name}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <StyledTextField
+            label="Age"
+            name="age"
+            value={studentDetails.age}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <StyledTextField
+            label="Level"
+            name="level"
+            value={studentDetails.level}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <StyledTextField
+            label="Notes"
+            name="notes"
+            value={studentDetails.notes}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+            multiline
+            rows={3}
+          />
+        </DialogContent>
+        <DialogActions>
+          <StyledButton onClick={handleDialogClose} color="secondary">
+            Cancel
+          </StyledButton>
+          <StyledButton onClick={saveStudent} variant="contained">
+            Save
+          </StyledButton>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

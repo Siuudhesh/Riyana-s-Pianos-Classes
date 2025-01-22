@@ -130,10 +130,6 @@
   font-size: clamp(0.8rem, 1.5vw, 0.9rem) !important;
 }
 
-.logout-container {
-  text-align: right;
-}
-
 @media (max-width: 768px) {
   .dashboard-page {
     padding: 1rem;

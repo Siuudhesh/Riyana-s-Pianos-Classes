@@ -16,15 +16,15 @@
     right: 20px;
     z-index: 1000;
     background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-    color: white !important;
+    color: rgb(255, 255, 255) !important;
     border: none;
-    padding: 10px 20px !important;
+    padding: 5px 20px !important;
     border-radius: 25px !important;
     font-weight: bold !important;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease !important;
     text-transform: none !important;
-    min-width: 120px !important;
+    min-width: 100px !important;
   }
   
   .logout-button:hover {

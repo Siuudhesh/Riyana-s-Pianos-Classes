@@ -1,0 +1,65 @@
+/* Navbar Container */
+
+.navbar {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Logo Styling */
+  .logo {
+    flex-grow: 1;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--text-primary);
+    text-transform: none;
+  }
+  
+  /* Navigation Links */
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    color: var(--text-primary);
+  }
+  
+  .nav-button {
+    text-transform: none;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.642);
+    border-radius: 30px;
+  }
+  
+  /* Mobile Menu Icon */
+  .menu-icon {
+    display: none;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .nav-links {
+      display: none;
+    }
+  
+    .menu-icon {
+      display: block;
+    }
+    
+  }
+
+  .logout-container {
+    margin-top: -2.5rem;
+    margin-left: 1rem;
+    display: flex;
+    text-align: center;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .logout-button-hamburg{
+    position: fixed;
+    top: -23px;
+    right: -17px;
+  }
