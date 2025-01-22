@@ -28,7 +28,7 @@
 }
 
 .students-actions {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.85);
   padding: 2rem;
   border-radius: 20px;
   box-shadow: 0 8px 32px var(--box-shadow-light);
@@ -89,14 +89,16 @@
 }
 
 .student-card {
-  background: rgba(255, 255, 255, 0.9) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
   padding: 1.5rem !important;
-  border-radius: 15px !important;
-  box-shadow: 0 8px 32px var(--box-shadow-light) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
   text-align: center;
   transition: all 0.3s ease !important;
   position: relative;
   overflow: hidden;
+  border: 1px solid #e2e2e2;
+  background: linear-gradient(135deg, rgba(255, 209, 220, 0.1), rgba(229, 212, 242, 0.1));
 }
 
 .student-card::before {
@@ -106,7 +108,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255,209,220,0.1), rgba(229,212,242,0.1));
+  background: linear-gradient(135deg, rgba(255, 209, 220, 0.1), rgba(229, 212, 242, 0.1));
   transform: translateY(100%);
   transition: transform 0.3s ease-out;
 }
@@ -135,4 +137,49 @@
 
 .logout-container {
   text-align: right;
+}
+
+/* Dialog Styles */
+.dialog-paper {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.dialog-title {
+  color: var(--text-primary);
+}
+
+.dialog-content {
+  padding: 1rem 0;
+  color: var(--text-primary);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* Form Styles inside Dialog */
+.dialog-form {
+  margin-bottom: 1rem;
+}
+
+.dialog-form .MuiTextField-root {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.dialog-form .MuiButton-root {
+  border-radius: 25px;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--primary-pink), var(--accent-purple));
+  color: var(--text-primary);
+}
+
+.dialog-form .MuiButton-root:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }

@@ -16,7 +16,7 @@
     right: 20px;
     z-index: 1000;
     background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-    color: rgb(255, 255, 255) !important;
+    color: var(--text-primary) !important;
     border: none;
     padding: 5px 20px !important;
     border-radius: 25px !important;

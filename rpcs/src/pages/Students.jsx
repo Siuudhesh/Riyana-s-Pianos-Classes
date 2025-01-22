@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Paper, Button, TextField, Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Container, Typography, Grid, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { db, collection, addDoc, updateDoc, deleteDoc, doc, getDocs } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
@@ -7,9 +7,21 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/Students.css';
 import '../styles/common.css';
-import '../styles/transitions.css';
 
-const StyledTextField = styled(TextField)({
+const StyledButton = styled(Button)(({ theme }) => ({
+  borderRadius: '25px',
+  padding: '10px 20px',
+  textTransform: 'none',
+  fontWeight: 'bold',
+  background: 'linear-gradient(45deg, var(--primary-pink), var(--accent-purple))',
+  color: theme.palette.text.primary,
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)',
+  },
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: '10px',
@@ -17,26 +29,18 @@ const StyledTextField = styled(TextField)({
       backgroundColor: 'rgba(255, 255, 255, 1)',
     },
   },
-});
-
-const StyledButton = styled(Button)({
-  borderRadius: '25px',
-  padding: '10px 20px',
-  textTransform: 'none',
-  fontWeight: 'bold',
-  background: 'linear-gradient(45deg, var(--primary-pink), var(--accent-purple))',
-  '&:hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)',
+  '& .MuiInputLabel-root': {
+    color: theme.palette.text.secondary,
   },
-});
+}));
 
 const StudentsPage = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const [students, setStudents] = useState([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [viewDialogOpen, setViewDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [studentDetails, setStudentDetails] = useState({ name: '', age: '', level: '', notes: '' });
   const [editingStudent, setEditingStudent] = useState(null);
 
@@ -60,19 +64,22 @@ const StudentsPage = () => {
     fetchStudents();
   }, []);
 
-  const handleDialogOpen = (student = null) => {
-    if (student) {
-      setStudentDetails({ name: student.name, age: student.age || '', level: student.level || '', notes: student.notes || '' });
-      setEditingStudent(student.id);
-    } else {
-      setStudentDetails({ name: '', age: '', level: '', notes: '' });
-      setEditingStudent(null);
-    }
-    setDialogOpen(true);
+  const handleCardClick = (student) => {
+    setStudentDetails(student);
+    setViewDialogOpen(true);
+  };
+
+  const handleEditClick = (student) => {
+    setStudentDetails({ ...student });
+    setEditingStudent(student.id);
+    setEditDialogOpen(true);
   };
 
   const handleDialogClose = () => {
-    setDialogOpen(false);
+    setViewDialogOpen(false);
+    setEditDialogOpen(false);
+    setStudentDetails({ name: '', age: '', level: '', notes: '' });
+    setEditingStudent(null);
   };
 
   const handleInputChange = (e) => {
@@ -110,18 +117,16 @@ const StudentsPage = () => {
 
   return (
     <div className="students-page">
-      <Navbar/>
+      <Navbar />
       <Container className="students-container">
         <header className="students-header">
           <Typography variant="h3" className="students-title">
             Manage Your Students
           </Typography>
         </header>
-
-        <StyledButton onClick={() => handleDialogOpen()} variant="contained" className="action-btn">
+        <StyledButton onClick={() => setEditDialogOpen(true)} variant="contained" className="action-btn">
           Add New Student
         </StyledButton>
-
         <section className="students-list">
           <Typography variant="h5" className="list-title">
             Students List
@@ -134,30 +139,11 @@ const StudentsPage = () => {
             <Grid container spacing={4}>
               {students.map((student) => (
                 <Grid item xs={12} sm={6} md={4} key={student.id}>
-                  <Paper className="student-card">
+                  <Paper className="student-card" onClick={() => handleCardClick(student)}>
                     <Typography variant="h6" className="student-name">
                       {student.name}
                     </Typography>
                     <Typography variant="body2">Age: {student.age || 'N/A'}</Typography>
-                    <Typography variant="body2">Level: {student.level || 'N/A'}</Typography>
-                    <Typography variant="body2">Notes: {student.notes || 'N/A'}</Typography>
-                    <Box className="student-actions">
-                      <StyledButton
-                        variant="outlined"
-                        onClick={() => handleDialogOpen(student)}
-                        className="action-btn"
-                      >
-                        Edit
-                      </StyledButton>
-                      <StyledButton
-                        variant="outlined"
-                        color="error"
-                        onClick={() => deleteStudent(student.id)}
-                        className="action-btn"
-                      >
-                        Delete
-                      </StyledButton>
-                    </Box>
                   </Paper>
                 </Grid>
               ))}
@@ -166,8 +152,31 @@ const StudentsPage = () => {
         </section>
       </Container>
 
-      <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm">
-        <DialogTitle>{editingStudent ? 'Edit Student' : 'Add New Student'}</DialogTitle>
+      {/* View Student Details Dialog */}
+      <Dialog open={viewDialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm" PaperProps={{ sx: { background: 'rgba(255, 255, 255, 0.95)', borderRadius: 2, boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)' } }}>
+        <DialogTitle sx={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>Student Details</DialogTitle>
+        <DialogContent>
+          <Typography>Name: {studentDetails.name}</Typography>
+          <Typography>Age: {studentDetails.age}</Typography>
+          <Typography>Level: {studentDetails.level || 'N/A'}</Typography>
+          <Typography>Notes: {studentDetails.notes || 'N/A'}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <StyledButton onClick={() => handleEditClick(studentDetails)}>Edit</StyledButton>
+          <StyledButton onClick={() => deleteStudent(studentDetails.id)} color="error">
+            Delete
+          </StyledButton>
+          <StyledButton onClick={handleDialogClose} color="secondary">
+            Close
+          </StyledButton>
+        </DialogActions>
+      </Dialog>
+
+      {/* Add/Edit Student Dialog */}
+      <Dialog open={editDialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm" PaperProps={{ sx: { background: 'rgba(255, 255, 255, 0.95)', borderRadius: 2, boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)' } }}>
+        <DialogTitle sx={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>
+          {editingStudent ? 'Edit Student' : 'Add New Student'}
+        </DialogTitle>
         <DialogContent>
           <StyledTextField
             label="Name"
