@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Typography, Grid, Paper } from '@mui/material';
 import { FaUserGraduate, FaCalendarAlt, FaChartLine, FaPlusCircle } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
 import '../styles/Dashboard.css';
 import '../styles/common.css';
 import '../styles/transitions.css';
@@ -25,7 +24,6 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-page">
-      <Navbar/>
       <Container className="dashboard-container">
         <header className="dashboard-header">
           <Typography variant="h3" className="dashboard-title">
