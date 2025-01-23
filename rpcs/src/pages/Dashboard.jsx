@@ -84,7 +84,7 @@ const Dashboard = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Paper className="action-card view-schedule">
+              <Paper className="action-card view-schedule" onClick={() => navigate('/schedule')}>
                 <FaCalendarAlt className="action-icon" />
                 <Typography variant="h6" className="action-title">
                   View Schedule

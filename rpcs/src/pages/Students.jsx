@@ -13,7 +13,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   padding: '10px 20px',
   textTransform: 'none',
   fontWeight: 'bold',
-  background: 'linear-gradient(45deg, var(--primary-pink), var(--accent-purple))',
+  background: 'linear-gradient(135deg, #fff4bd, #fdf7d2)',
   color: theme.palette.text.primary,
   '&:hover': {
     transform: 'translateY(-2px)',
@@ -144,6 +144,9 @@ const StudentsPage = () => {
                       {student.name}
                     </Typography>
                     <Typography variant="body2">Age: {student.age || 'N/A'}</Typography>
+                    <Typography variant="body2" className="student-notes">
+                      Notes: {student.notes || 'No notes available'}
+                    </Typography>
                   </Paper>
                 </Grid>
               ))}
@@ -153,7 +156,7 @@ const StudentsPage = () => {
       </Container>
 
       {/* View Student Details Dialog */}
-      <Dialog open={viewDialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm" PaperProps={{ sx: { background: 'rgba(255, 255, 255, 0.95)', borderRadius: 2, boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)' } }}>
+      <Dialog open={viewDialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm" PaperProps={{ sx: { background: 'linear-gradient(135deg, #ffd1dc, #f8cdd8)', borderRadius: 2, boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)' } }}>
         <DialogTitle sx={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>Student Details</DialogTitle>
         <DialogContent>
           <Typography>Name: {studentDetails.name}</Typography>
@@ -173,7 +176,7 @@ const StudentsPage = () => {
       </Dialog>
 
       {/* Add/Edit Student Dialog */}
-      <Dialog open={editDialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm" PaperProps={{ sx: { background: 'rgba(255, 255, 255, 0.95)', borderRadius: 2, boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)' } }}>
+      <Dialog open={editDialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm" PaperProps={{ sx: { background: 'linear-gradient(135deg, #b5e6eb, #d7f4f5)', borderRadius: 2, boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)' } }}>
         <DialogTitle sx={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>
           {editingStudent ? 'Edit Student' : 'Add New Student'}
         </DialogTitle>

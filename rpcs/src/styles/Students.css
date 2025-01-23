@@ -89,7 +89,7 @@
 }
 
 .student-card {
-  background: rgba(255, 255, 255, 0.85) !important;
+  background: linear-gradient(135deg, #e5d4f2, #f0e6f8) !important;
   padding: 1.5rem !important;
   border-radius: 20px !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
@@ -98,7 +98,6 @@
   position: relative;
   overflow: hidden;
   border: 1px solid #e2e2e2;
-  background: linear-gradient(135deg, rgba(255, 209, 220, 0.1), rgba(229, 212, 242, 0.1));
 }
 
 .student-card::before {

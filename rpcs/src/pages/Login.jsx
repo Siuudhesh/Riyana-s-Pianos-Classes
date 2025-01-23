@@ -16,8 +16,8 @@ const Login = ({ onLogin }) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const VALID_USERNAME = 'teacher';
-    const VALID_PASSWORD = 'piano123';
+    const VALID_USERNAME = 'Riyana';
+    const VALID_PASSWORD = 'Riyana2004';
 
     if (username === VALID_USERNAME && password === VALID_PASSWORD) {
       login();

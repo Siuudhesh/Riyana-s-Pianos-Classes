@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Students from './pages/Students';
+import Schedule from './pages/Schedule';
 import './styles/common.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/students" element={<Students />} />
+          <Route path="/schedule" element={<Schedule />} /> {/* Corrected path */}
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>
