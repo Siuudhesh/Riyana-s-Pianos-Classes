@@ -37,7 +37,7 @@ const Navbar = () => {
         <div className="nav-links">
           <Button className="nav-button" color='transparent' onClick={() => navigateTo('/dashboard')}>Dashboard</Button>
           <Button className="nav-button" color='transparent' onClick={() => navigateTo('/students')}>Students</Button>
-          <Button className="nav-button" color='transparent' onClick={() => navigateTo('/profile')}>Profile</Button>
+          <Button className="nav-button" color='transparent' onClick={() => navigateTo('/Schedule')}>Schedule</Button>
           <div className='logout-container'>
             <LogoutButton />
           </div>

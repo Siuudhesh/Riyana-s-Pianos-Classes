@@ -1,0 +1,164 @@
+/* src/styles/Schedule.css */
+
+.schedule-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--primary-pink) 0%, var(--secondary-blue) 50%, var(--accent-purple) 100%);
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.schedule-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+}
+
+.add-btn {
+  background: linear-gradient(45deg, var(--primary-pink), var(--accent-purple)) !important;
+  color: var(--text-primary) !important;
+  font-weight: bold !important;
+  padding: 0.8rem 1.5rem !important;
+  border-radius: 25px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  transition: transform 0.2s ease !important;
+}
+
+.add-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+.schedule-list {
+  width: 100%;
+  margin-top: 1rem;
+  max-width: 900px;
+}
+
+.class-item {
+  background: linear-gradient(135deg, #e5d4f2, #f0e6f8) !important;
+  padding: 1.5rem !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+  text-align: center;
+  transition: all 0.3s ease !important;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e2e2e2;
+}
+
+.class-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 209, 220, 0.1), rgba(229, 212, 242, 0.1));
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+}
+
+.class-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+.class-item:hover::before {
+  transform: translateY(0);
+}
+
+.class-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+}
+
+.class-summary .MuiAccordionSummary-expandIcon {
+  color: var(--text-primary);
+}
+
+.class-details {
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.class-details p {
+  margin: 5px 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  font-weight: bold !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 25px !important;
+  transition: transform 0.2s ease !important;
+}
+
+.edit-btn {
+  background: #ffd700 !important;
+  color: black !important;
+}
+
+.edit-btn:hover {
+  transform: scale(1.05);
+}
+
+.delete-btn {
+  background: #ff4d4d !important;
+  color: white !important;
+}
+
+.delete-btn:hover {
+  transform: scale(1.05);
+}
+
+.attendance-popup {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .schedule-page {
+    padding: 1rem;
+  }
+
+  .class-summary {
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .class-details {
+    padding: 0.8rem 1.2rem;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem !important;
+  }
+}

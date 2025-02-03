@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Paper, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import { Container, Typography, Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { db, collection, addDoc, updateDoc, deleteDoc, doc, getDocs } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
@@ -40,9 +40,9 @@ const StudentsPage = () => {
 
   const [students, setStudents] = useState([]);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [studentDetails, setStudentDetails] = useState({ name: '', age: '', level: '', notes: '' });
+  const [studentDetails, setStudentDetails] = useState({ name: '', age: '', level: '', notes: '', attendanceCount: 0 });
   const [editingStudent, setEditingStudent] = useState(null);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -66,20 +66,15 @@ const StudentsPage = () => {
 
   const handleCardClick = (student) => {
     setStudentDetails(student);
+    setEditingStudent(student.id); // Set the ID of the student being edited
     setViewDialogOpen(true);
-  };
-
-  const handleEditClick = (student) => {
-    setStudentDetails({ ...student });
-    setEditingStudent(student.id);
-    setEditDialogOpen(true);
   };
 
   const handleDialogClose = () => {
     setViewDialogOpen(false);
-    setEditDialogOpen(false);
-    setStudentDetails({ name: '', age: '', level: '', notes: '' });
+    setStudentDetails({ name: '', age: '', level: '', notes: '', attendanceCount: 0 });
     setEditingStudent(null);
+    setAddDialogOpen(false);
   };
 
   const handleInputChange = (e) => {
@@ -90,12 +85,25 @@ const StudentsPage = () => {
   const saveStudent = async () => {
     try {
       if (editingStudent) {
+        // Update the student in Firestore
         await updateDoc(doc(db, 'students', editingStudent), studentDetails);
+
+        // Update the student in the local state without creating duplicates
+        setStudents((prevStudents) =>
+          prevStudents.map((student) =>
+            student.id === editingStudent ? { ...student, ...studentDetails } : student
+          )
+        );
       } else {
-        await addDoc(collection(db, 'students'), studentDetails);
+        // Add a new student to the database
+        const docRef = await addDoc(collection(db, 'students'), { ...studentDetails });
+
+        // Add the new student to the local state
+        setStudents((prevStudents) => [
+          ...prevStudents,
+          { ...studentDetails, id: docRef.id },
+        ]);
       }
-      const updatedStudents = await getDocs(collection(db, 'students'));
-      setStudents(updatedStudents.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       handleDialogClose();
     } catch (error) {
       console.error('Error saving student:', error);
@@ -105,10 +113,17 @@ const StudentsPage = () => {
   const deleteStudent = async (id) => {
     try {
       await deleteDoc(doc(db, 'students', id));
+
+      // Remove the student from the local state without causing duplicates
       setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
+      handleDialogClose();
     } catch (error) {
       console.error('Error deleting student:', error);
     }
+  };
+
+  const handleEditClick = () => {
+    setAddDialogOpen(true); // Open the dialog for editing
   };
 
   if (!isAuthenticated) {
@@ -124,7 +139,7 @@ const StudentsPage = () => {
             Manage Your Students
           </Typography>
         </header>
-        <StyledButton onClick={() => setEditDialogOpen(true)} variant="contained" className="action-btn">
+        <StyledButton onClick={() => { setAddDialogOpen(true); setEditingStudent(null); }} variant="contained" className="action-btn">
           Add New Student
         </StyledButton>
         <section className="students-list">
@@ -144,9 +159,11 @@ const StudentsPage = () => {
                       {student.name}
                     </Typography>
                     <Typography variant="body2">Age: {student.age || 'N/A'}</Typography>
+                    <Typography variant="body2">Level: {student.level || 'N/A'}</Typography>
                     <Typography variant="body2" className="student-notes">
                       Notes: {student.notes || 'No notes available'}
                     </Typography>
+                    <Typography variant="body2">Classes Attended: {student.attendanceCount}</Typography>
                   </Paper>
                 </Grid>
               ))}
@@ -163,9 +180,12 @@ const StudentsPage = () => {
           <Typography>Age: {studentDetails.age}</Typography>
           <Typography>Level: {studentDetails.level || 'N/A'}</Typography>
           <Typography>Notes: {studentDetails.notes || 'N/A'}</Typography>
+          <Typography>Classes Attended: {studentDetails.attendanceCount || 0}</Typography>
         </DialogContent>
         <DialogActions>
-          <StyledButton onClick={() => handleEditClick(studentDetails)}>Edit</StyledButton>
+          <StyledButton onClick={handleEditClick} variant="contained">
+            Edit
+          </StyledButton>
           <StyledButton onClick={() => deleteStudent(studentDetails.id)} color="error">
             Delete
           </StyledButton>
@@ -176,7 +196,7 @@ const StudentsPage = () => {
       </Dialog>
 
       {/* Add/Edit Student Dialog */}
-      <Dialog open={editDialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm" PaperProps={{ sx: { background: 'linear-gradient(135deg, #b5e6eb, #d7f4f5)', borderRadius: 2, boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)' } }}>
+      <Dialog open={addDialogOpen} onClose={handleDialogClose} fullWidth maxWidth="sm" PaperProps={{ sx: { background: 'linear-gradient(135deg, #b5e6eb, #d7f4f5)', borderRadius: 2, boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)' } }}>
         <DialogTitle sx={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>
           {editingStudent ? 'Edit Student' : 'Add New Student'}
         </DialogTitle>
@@ -214,6 +234,15 @@ const StudentsPage = () => {
             margin="normal"
             multiline
             rows={3}
+          />
+          <StyledTextField
+            label="Classes Attended"
+            name="attendanceCount"
+            value={studentDetails.attendanceCount}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+            type="number"
           />
         </DialogContent>
         <DialogActions>

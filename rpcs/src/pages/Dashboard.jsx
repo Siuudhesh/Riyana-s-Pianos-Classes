@@ -1,22 +1,27 @@
 // src/pages/Dashboard.jsx
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Typography, Grid, Paper } from '@mui/material';
 import { FaUserGraduate, FaCalendarAlt, FaChartLine, FaPlusCircle } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
+import ClassForm from '../components/ClassForm';  // Import the ClassForm component
 import '../styles/Dashboard.css';
-import '../styles/common.css';
-import '../styles/transitions.css';
 
 const Dashboard = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [showClassForm, setShowClassForm] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
     }
   }, [isAuthenticated, navigate]);
+
+  const handleClassSaved = () => {
+    // After the class is saved, you can update the statistics or refresh the dashboard.
+    console.log("Class saved!");
+  };
 
   if (!isAuthenticated) {
     return null;
@@ -106,7 +111,7 @@ const Dashboard = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Paper className="action-card add-class">
+              <Paper className="action-card add-class" onClick={() => setShowClassForm(true)}>
                 <FaPlusCircle className="action-icon" />
                 <Typography variant="h6" className="action-title">
                   Add a New Class
@@ -125,6 +130,13 @@ const Dashboard = () => {
           </Typography>
         </footer>
       </Container>
+
+      {/* Add the ClassForm modal */}
+      <ClassForm 
+        open={showClassForm} 
+        onClose={() => setShowClassForm(false)} 
+        onClassSaved={handleClassSaved} 
+      />
     </div>
   );
 };
