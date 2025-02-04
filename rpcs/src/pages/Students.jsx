@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
+import { Container, Typography, Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Snackbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { db, collection, addDoc, updateDoc, deleteDoc, doc, getDocs } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
@@ -43,6 +43,9 @@ const StudentsPage = () => {
   const [studentDetails, setStudentDetails] = useState({ name: '', age: '', level: '', notes: '', attendanceCount: 0 });
   const [editingStudent, setEditingStudent] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -105,8 +108,14 @@ const StudentsPage = () => {
         ]);
       }
       handleDialogClose();
+      setSnackbarMessage('Student saved successfully!');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
     } catch (error) {
       console.error('Error saving student:', error);
+      setSnackbarMessage('Error saving student.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
 
@@ -117,13 +126,61 @@ const StudentsPage = () => {
       // Remove the student from the local state without causing duplicates
       setStudents((prevStudents) => prevStudents.filter((student) => student.id !== id));
       handleDialogClose();
+      setSnackbarMessage('Student deleted successfully!');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
     } catch (error) {
       console.error('Error deleting student:', error);
+      setSnackbarMessage('Error deleting student.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
 
   const handleEditClick = () => {
     setAddDialogOpen(true); // Open the dialog for editing
+  };
+
+  const handleClearAttendance = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'students'));
+      const studentDocs = querySnapshot.docs;
+
+      // Check if there are any students
+      if (studentDocs.length === 0) {
+        setSnackbarMessage('No students found!');
+        setSnackbarSeverity('warning');
+        setSnackbarOpen(true);
+        return;
+      }
+
+      const updatePromises = studentDocs.map(async (docSnapshot) => {
+        const studentRef = doc(db, 'students', docSnapshot.id);
+
+        try {
+          await updateDoc(studentRef, { attendanceCount: 0 });
+        } catch (updateError) {
+          console.error(`Error updating student ${docSnapshot.id}:`, updateError);
+        }
+      });
+
+      // Wait for all updates to complete
+      await Promise.all(updatePromises);
+
+      // Fetch updated students list
+      const querySnapshotUpdated = await getDocs(collection(db, 'students'));
+      const updatedStudentsList = querySnapshotUpdated.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setStudents(updatedStudentsList);
+
+      setSnackbarMessage('All attendance counts have been reset.');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Error clearing attendance:', error);
+      setSnackbarMessage('Failed to clear attendance.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    }
   };
 
   if (!isAuthenticated) {
@@ -139,9 +196,14 @@ const StudentsPage = () => {
             Manage Your Students
           </Typography>
         </header>
-        <StyledButton onClick={() => { setAddDialogOpen(true); setEditingStudent(null); }} variant="contained" className="action-btn">
-          Add New Student
-        </StyledButton>
+        <div className="action-buttons">
+          <StyledButton onClick={() => { setAddDialogOpen(true); setEditingStudent(null); }} variant="contained" className="action-btn">
+            Add New Student
+          </StyledButton>
+          <StyledButton onClick={handleClearAttendance} variant="contained" className="action-btn" color="error">
+            Clear Attendance
+          </StyledButton>
+        </div>
         <section className="students-list">
           <Typography variant="h5" className="list-title">
             Students List
@@ -254,6 +316,15 @@ const StudentsPage = () => {
           </StyledButton>
         </DialogActions>
       </Dialog>
+
+      {/* Snackbar for alerts */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+      />
     </div>
   );
 };

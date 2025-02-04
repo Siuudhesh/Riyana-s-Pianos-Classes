@@ -96,6 +96,11 @@
   font-size: 1rem;
 }
 
+.student-namee{
+  font-size: 1.2rem !important;
+  font-weight: bold !important;
+  color: var(--text-primary);
+}
 .button-group {
   display: flex;
   gap: 10px;
@@ -103,7 +108,8 @@
 }
 
 .edit-btn,
-.delete-btn {
+.delete-btn,
+.done-btn {
   font-weight: bold !important;
   padding: 0.5rem 1rem !important;
   border-radius: 25px !important;
@@ -128,19 +134,44 @@
   transform: scale(1.05);
 }
 
-.attendance-popup {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  font-weight: bold;
+.done-btn {
+    background: #1976d2 !important;
+    color: white !important;
 }
+
+.done-btn:hover {
+    transform: scale(1.05);
+}
+
+.delete-btn:hover{
+  transform: scale(1.05);
+}
+
+.upcoming-label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 99, 71, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.missed-label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ffbb00;
+  color: rgb(59, 59, 59);
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-left: 10px;
+}
+
 
 @media (max-width: 768px) {
   .schedule-page {
