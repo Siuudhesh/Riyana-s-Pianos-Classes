@@ -1,16 +1,19 @@
-// src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Typography, Grid, Paper } from '@mui/material';
 import { FaUserGraduate, FaCalendarAlt, FaChartLine, FaPlusCircle } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
+import { useNextClass } from '../context/NextClassContext'; // Import the NextClassContext
 import ClassForm from '../components/ClassForm';  // Import the ClassForm component
+import moment from 'moment';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
   const { isAuthenticated } = useAuth();
+  const { nextClass } = useNextClass(); // Get nextClass from context
   const navigate = useNavigate();
   const [showClassForm, setShowClassForm] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState('');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -18,8 +21,26 @@ const Dashboard = () => {
     }
   }, [isAuthenticated, navigate]);
 
+  useEffect(() => {
+    if (nextClass) {
+      console.log("Next Class:", nextClass); // Debugging log to check if nextClass is valid
+      startCountdown(nextClass);
+    }
+  }, [nextClass]);
+
+  const startCountdown = (nextClassData) => {
+    const countdownInterval = setInterval(() => {
+      const timeDiff = moment(nextClassData.date + ' ' + nextClassData.time).diff(moment());
+      if (timeDiff <= 0) {
+        setTimeRemaining('Class Started');
+        clearInterval(countdownInterval);  // Stop the timer once the class starts
+      } else {
+        setTimeRemaining(moment.utc(timeDiff).format('HH:mm:ss'));
+      }
+    }, 1000);  // Update every second
+  };
+
   const handleClassSaved = () => {
-    // After the class is saved, you can update the statistics or refresh the dashboard.
     console.log("Class saved!");
   };
 
@@ -52,11 +73,14 @@ const Dashboard = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <Paper className="stats-card">
-              <Typography variant="h4" className="stats-number">
-                8
+              <Typography variant="h4" className="nextClassStudentName">
+                {nextClass ? nextClass.student : 'N/A'} {/* Display student name from next class */}
               </Typography>
-              <Typography variant="subtitle1" className="stats-label">
-                Scheduled Classes
+              <Typography variant="subtitle1" className="stats-label-nameStudent">
+                Time Until Next Class
+              </Typography>
+              <Typography variant="body1" className="time-remaining">
+                {timeRemaining || 'Fetching next class...'}
               </Typography>
             </Paper>
           </Grid>

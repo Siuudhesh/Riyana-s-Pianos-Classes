@@ -104,6 +104,20 @@
   color: var(--text-secondary);
 }
 
+.nextClassStudentName{
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  color:var(--text-primary);
+}
+
+.stats-label-nameStudent{
+  font-size: 1rem !important;
+  margin-top: 3px !important;
+  font-weight: bold !important;
+  color:#FF5733;
+  margin-bottom: -5px !important;
+}
+
 .manage-students {
   background: linear-gradient(135deg, #ffd1dc, #f8cdd8) !important;
 }
@@ -129,6 +143,15 @@
 .footer-text {
   font-size: clamp(0.8rem, 1.5vw, 0.9rem) !important;
 }
+
+/* src/styles/Dashboard.css */
+.time-remaining {
+  font-size: 1.3rem  !important;
+  font-weight: bold !important;
+  color: #FF5733;  /* Optional: color change */
+  text-align: center;
+}
+
 
 @media (max-width: 768px) {
   .dashboard-page {

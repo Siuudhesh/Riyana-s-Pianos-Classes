@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, FormControl, Select, MenuItem, InputLabel } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { db } from "../firebase/config";
-import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
+import { db } from "../firebase/config";  // Import your Firebase config
+import { collection, addDoc, updateDoc, doc, getDocs } from "firebase/firestore";  // Import getDocs
 import moment from "moment";
 
 // Styled TextField like in StudentsPage
@@ -35,15 +35,19 @@ const ClassForm = ({ open, onClose, editClassData = null, onClassSaved }) => {
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const studentsRef = collection(db, "students");
-      const snapshot = await getDocs(studentsRef);
-      setStudents(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+      try {
+        const studentsRef = collection(db, "students");  // Refer to your Firestore collection
+        const snapshot = await getDocs(studentsRef);  // Fetch the documents
+        setStudents(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));  // Map data to state
+      } catch (error) {
+        console.error("Error fetching students:", error);
+      }
     };
 
     fetchStudents();
 
     if (editClassData) {
-      setNewClass(editClassData);
+      setNewClass(editClassData);  // Set data if editing
     }
   }, [editClassData]);
 
@@ -53,14 +57,14 @@ const ClassForm = ({ open, onClose, editClassData = null, onClassSaved }) => {
 
     try {
       if (editClassData) {
-        await updateDoc(doc(db, "classes", editClassData.id), newClass);
+        await updateDoc(doc(db, "classes", editClassData.id), newClass);  // Update class if editing
       } else {
-        await addDoc(collection(db, "classes"), newClass);
+        await addDoc(collection(db, "classes"), newClass);  // Add new class
       }
 
-      onClassSaved();
-      onClose();
-      setNewClass({ student: "", topic: "", date: moment().format("YYYY-MM-DD"), time: "", duration: "", location: "Home", notes: "" });
+      onClassSaved();  // Notify parent component
+      onClose();  // Close dialog
+      setNewClass({ student: "", topic: "", date: moment().format("YYYY-MM-DD"), time: "", duration: "", location: "Home", notes: "" });  // Reset form
     } catch (error) {
       console.error("Error saving class:", error);
     }
